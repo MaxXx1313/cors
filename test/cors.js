@@ -163,14 +163,14 @@
       cors()(req, res, next);
     });
 
-    it('no options enables default CORS to all origins', function (done) {
+    it('no options enables default CORS to requested origin', function (done) {
       // arrange
       var req, res, next;
       req = fakeRequest();
       res = fakeResponse();
       next = function () {
         // assert
-        res.getHeader('Access-Control-Allow-Origin').should.equal('*');
+        res.getHeader('Access-Control-Allow-Origin').should.equal(req.headers.origin);
         should.not.exist(res.getHeader('Access-Control-Allow-Methods'));
         done();
       };
@@ -192,7 +192,7 @@
       };
       next = function () {
         // assert
-        res.getHeader('Access-Control-Allow-Origin').should.equal('*');
+        res.getHeader('Access-Control-Allow-Origin').should.equal(req.headers.origin);
         res.getHeader('Access-Control-Allow-Methods').should.equal('GET,PUT,PATCH,POST,DELETE');
         done();
       };
@@ -360,7 +360,7 @@
         var req, res, next, options;
         options = {
         };
-        req = fakeRequest();
+        req = fakeRequest({});
         res = fakeResponse();
         next = function () {
           // assert

@@ -36,7 +36,7 @@
         .set('Origin', 'http://example.com')
         .end(function (err, res) {
           should.not.exist(err);
-          res.headers['access-control-allow-origin'].should.eql('*');
+          res.headers['access-control-allow-origin'].should.eql('http://example.com');
           done();
         });
     });
@@ -48,7 +48,7 @@
         .set('Origin', 'http://example.com')
         .end(function (err, res) {
           should.not.exist(err);
-          res.headers['access-control-allow-origin'].should.eql('*');
+          res.headers['access-control-allow-origin'].should.eql('http://example.com');
           res.text.should.eql('hello world');
           done();
         });
