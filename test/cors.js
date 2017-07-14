@@ -188,13 +188,13 @@
       res.end = function () {
         // assert
         res.statusCode.should.equal(204);
+        res.getHeader('Access-Control-Allow-Origin').should.equal(req.headers.origin);
+        res.getHeader('Access-Control-Allow-Methods').should.equal('GET,HEAD,PUT,PATCH,POST,DELETE');
         done();
       };
       next = function () {
         // assert
-        res.getHeader('Access-Control-Allow-Origin').should.equal(req.headers.origin);
-        res.getHeader('Access-Control-Allow-Methods').should.equal('GET,PUT,PATCH,POST,DELETE');
-        done();
+        done('should not be called');
       };
 
       // act
@@ -218,16 +218,16 @@
         res.end = function () {
           // assert
           res.statusCode.should.equal(204);
-          done();
-        };
-        next = function () {
-          // assert
           res.getHeader('Access-Control-Allow-Origin').should.equal('example.com');
           res.getHeader('Access-Control-Allow-Methods').should.equal('FOO,bar');
           res.getHeader('Access-Control-Allow-Headers').should.equal('FIZZ,buzz');
           res.getHeader('Access-Control-Allow-Credentials').should.equal('true');
           res.getHeader('Access-Control-Max-Age').should.equal('123');
           done();
+        };
+        next = function () {
+          // assert
+          done('should not be called');
         };
 
         // act
@@ -477,19 +477,19 @@
         res.end = function () {
           // assert
           res.statusCode.should.equal(204);
+          res.getHeader('Access-Control-Allow-Methods').should.equal('method1,method2');
           done();
         };
         next = function () {
           // assert
-          res.getHeader('Access-Control-Allow-Methods').should.equal('method1,method2');
-          done();
+          done('should not be called');
         };
 
         // act
         cors(options)(req, res, next);
       });
 
-      it('methods defaults to GET, PUT, PATCH, POST, DELETE', function (done) {
+      it('methods defaults to GET, HEAD, PUT, PATCH, POST, DELETE', function (done) {
         // arrange
         var req, res, next, options;
         options = {
@@ -500,12 +500,12 @@
         res.end = function () {
           // assert
           res.statusCode.should.equal(204);
+          res.getHeader('Access-Control-Allow-Methods').should.equal('GET,HEAD,PUT,PATCH,POST,DELETE');
           done();
         };
         next = function () {
           // assert
-          res.getHeader('Access-Control-Allow-Methods').should.equal('GET,PUT,PATCH,POST,DELETE');
-          done();
+          done('should not be called');
         };
 
         // act
